@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.clouclouclou.bloublou.R
+import com.clouclouclou.bloublou.databinding.TasklistfragmentBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
 import java.util.UUID
 
 
@@ -21,29 +21,23 @@ class TaskListFragment : Fragment() {
         Task(id = "id_2", title = "Task 2"),
         Task(id = "id_3", title = "Task 3")
     )
+
+    private var _binding: TasklistfragmentBinding? = null
+    private val binding get() = _binding!!
     private val adapter = TaskListAdapter()
-    private var buttonFab = view?.findViewById<FloatingActionButton>(R.id.fabButton)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-        buttonFab?.setOnClickListener(){
-            val newTask = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
-            taskList += newTask
-        }
-    }
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        this.adapter.currentList = taskList
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.tasklistfragment, container, false)
-
+    ): View {
+        _binding = TasklistfragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,6 +45,13 @@ class TaskListFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recylerview)
         recyclerView.adapter = this.adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter.submitList(taskList);
+        binding.fabButton.setOnClickListener() {
+            val newTask =
+                Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
+            taskList += newTask
+            adapter.submitList(taskList)
+        }
     }
 
 
