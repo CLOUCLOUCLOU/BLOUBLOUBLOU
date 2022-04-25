@@ -5,14 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/task_title"
-        android:background="@android:color/holo_blue_bright"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="53dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/task_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@android:color/holo_blue_bright" />
+
+        <ImageButton
+            android:id="@+id/buttonDelete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/Description"
+            android:src="@drawable/ic_baseline_delete_24" />
+
+        <ImageButton
+            android:id="@+id/buttonEditable"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:src="@drawable/ic_baseline_create_24" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/task_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
+
 </LinearLayout>
