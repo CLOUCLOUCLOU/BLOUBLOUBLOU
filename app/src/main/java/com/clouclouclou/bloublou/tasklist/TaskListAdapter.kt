@@ -24,29 +24,25 @@ object ItemsDiffCallback : DiffUtil.ItemCallback<Task>() {
 
 
 // l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(ItemsDiffCallback) {
+class TaskListAdapter(val listener: TaskListListener) : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(ItemsDiffCallback) {
 
-    var onClickDelete: (Task) -> Unit = {}
-    var onClickEdit : (Task) -> Unit = {}
     // on utilise `inner` ici afin d'avoir accès aux propriétés de l'adapter directement
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var deleteButton = itemView.findViewById<ImageButton>(R.id.buttonDelete);
         val editButton = itemView.findViewById<ImageButton>(R.id.buttonEditable);
+        val title = itemView.findViewById<TextView>(R.id.task_title)
+        val description = itemView.findViewById<TextView>(R.id.task_description)
         fun bind(task: Task) {
-            val title = itemView.findViewById<TextView>(R.id.task_title)
-            val description = itemView.findViewById<TextView>(R.id.task_description)
 
             title.text = task.title
             description.text = task.description
-        }
-        fun deleteTask (task: Task) {
+
             deleteButton.setOnClickListener {
-                onClickDelete(task);
+                listener.onClickDelete(task);
             }
-        }
-        fun editTask (task : Task) {
+
             editButton.setOnClickListener{
-                onClickEdit(task);
+                listener.onClickEdit(task);
             }
         }
     }
@@ -59,7 +55,6 @@ class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(ItemsD
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(currentList[position])
-        holder.deleteTask(getItem(position))
 
     }
 

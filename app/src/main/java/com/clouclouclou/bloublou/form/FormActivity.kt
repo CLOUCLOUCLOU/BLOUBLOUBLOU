@@ -18,17 +18,27 @@ class FormActivity : AppCompatActivity() {
 
         val btnValidate = findViewById<Button>(R.id.btnValidate);
         val editTitle = findViewById<EditText>(R.id.editTextTitle);
-        val editButton  = findViewById<EditText>(R.id.edtiTextDescription);
+        val editDescription  = findViewById<EditText>(R.id.edtiTextDescription);
+
+        val task = intent.getSerializableExtra("editTask") as Task?;
+
+
+        editTitle.setText(task?.title);
+        editDescription.setText(task?.description);
+
+        val id = task?.id ?: UUID.randomUUID().toString()
 
         btnValidate.setOnClickListener{
             val newTask = Task(
-                id = UUID.randomUUID().toString(),
+                id = id,
                 title = editTitle.text.toString(),
-                description =editButton.text.toString())
+                description = editDescription.text.toString())
             intent.putExtra("task", newTask);
             setResult(RESULT_OK, intent);
             finish()
         }
+
+
 
     }
 }
