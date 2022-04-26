@@ -1,4 +1,4 @@
-package com.clouclouclou.bloublou.network.model
+package com.clouclouclou.bloublou.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

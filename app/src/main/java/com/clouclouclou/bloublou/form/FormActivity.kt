@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.clouclouclou.bloublou.R
-import com.clouclouclou.bloublou.tasklist.Task
+import com.clouclouclou.bloublou.model.Task
 import java.util.*
 
 class FormActivity : AppCompatActivity() {

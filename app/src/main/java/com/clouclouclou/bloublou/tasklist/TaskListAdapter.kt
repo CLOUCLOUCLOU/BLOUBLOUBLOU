@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.clouclouclou.bloublou.R
+import com.clouclouclou.bloublou.model.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import okio.`-DeprecatedOkio`
 
 object ItemsDiffCallback : DiffUtil.ItemCallback<Task>() {
     override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
@@ -43,6 +45,7 @@ class TaskListAdapter(val listener: TaskListListener) : ListAdapter<Task, TaskLi
 
             editButton.setOnClickListener{
                 listener.onClickEdit(task);
+
             }
         }
     }

@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import com.clouclouclou.bloublou.network.service.*
 
 object Api {
-    private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
+    private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo3MTIsImV4cCI6MTY4MjQ5NDM0MH0._OaaCCl783_C_SwoUDaZ7Cbm5gjA2e2Gm3aPjboN4vI"
 
     private val retrofit by lazy {
         // client HTTP
@@ -31,9 +31,7 @@ object Api {
             coerceInputValues = true
         }
 
-        val userWebService : UserWebService by lazy {
-           Api.retrofit.create(UserWebService::class.java)
-        }
+
 
         // instance retrofit pour implémenter les webServices:
         Retrofit.Builder()
@@ -42,4 +40,8 @@ object Api {
             .addConverterFactory(jsonSerializer.asConverterFactory("application/json".toMediaType()))
             .build()
     }
+    val userWebService : UserWebService by lazy {
+        retrofit.create(UserWebService::class.java)
+    }
+    
 }
