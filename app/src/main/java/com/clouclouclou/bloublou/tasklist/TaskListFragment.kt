@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -20,6 +21,10 @@ import com.clouclouclou.bloublou.network.Api
 import com.clouclouclou.bloublou.model.Task
 import com.clouclouclou.bloublou.network.viewmodel.TasksListViewModel
 import kotlinx.coroutines.launch
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.clouclouclou.bloublou.user.UserInfoActivity
+import java.util.*
 
 
 class TaskListFragment : Fragment() {
@@ -95,8 +100,9 @@ class TaskListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val userInfoTextView = view?.findViewById<TextView>(R.id.userInfoTextView);
 
+        val userInfoTextView = view?.findViewById<TextView>(R.id.userInfoTextView);
+        val avatarImageView = view?.findViewById<ImageView>(R.id.avatarImageView);
         lifecycleScope.launch {
             tasksListViewModel.refresh();
         }
@@ -106,11 +112,11 @@ class TaskListFragment : Fragment() {
             val info = Api.userWebService.getInfo()
             val userInfo = info.body();
             userInfoTextView?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
+
+            binding.avatarImageView.load("https://goo.gl/gEgYUd") {
+                transformations(CircleCropTransformation())
+            }
         }
-
-        adapter
-
-
 
     }
 
@@ -125,6 +131,10 @@ class TaskListFragment : Fragment() {
         binding.fabButton.setOnClickListener() {
             val intent = Intent(context, FormActivity::class.java)
             createTask.launch(intent)
+        }
+        binding.avatarImageView.setOnClickListener {
+            val intent = Intent(context, UserInfoActivity::class.java)
+            startActivity(intent)
         }
 
 

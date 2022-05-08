@@ -19,7 +19,7 @@ class TasksListViewModel : ViewModel() {
     // même donnée mais publique et non-modifiable à l'extérieur afin de pouvoir seulement s'y abonner:
     public val tasksStateFlow: StateFlow<List<Task>> = _tasksStateFlow.asStateFlow()
 
-    suspend fun refresh() {
+    fun refresh() {
         viewModelScope.launch {
             val response = webService.getTasks() // Call HTTP (opération longue)
             if (!response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
@@ -31,24 +31,27 @@ class TasksListViewModel : ViewModel() {
 
         }
     }
-    suspend fun update(task: Task) {
-        viewModelScope.launch {
-            val response = webService.update( task ) // TODO: appel réseau
-            if (!response.isSuccessful) return@launch
 
+    fun update(task: Task) {
+        viewModelScope.launch {
+            val response = webService.update(task) // Call HTTP (opération longue)
+            if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
+                Log.e("Network", "Error: ${response.message()}")
+            }
             val updatedTask = response.body()!!
-            _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
+            _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask // on modifie le flow, ce qui déclenche ses observers
         }
     }
 
-    suspend fun create(task: Task) {
+    fun create(task: Task) {
         viewModelScope.launch {
-            val response = webService.create(task);
-
+            val response = webService.create(task)
+            if (response.isSuccessful) {
+                Log.e("Network", "Error: ${response.message()}")
+            }
+            val fetchedTasks = response.body()!!
+            _tasksStateFlow.value = _tasksStateFlow.value + fetchedTasks
         }
     }
 
-    suspend fun create() {}
-    suspend fun update() {}
-    suspend fun delete() {}
 }

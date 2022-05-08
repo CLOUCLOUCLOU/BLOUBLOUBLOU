@@ -13,4 +13,7 @@ data class User(
 
     @SerialName("lastname")
     val lastName: String,
+    
+    @SerialName("avatar")
+    val avatar: String?
 )
